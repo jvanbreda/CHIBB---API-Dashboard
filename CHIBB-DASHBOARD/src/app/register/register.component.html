@@ -1,3 +1,11 @@
-<p>
-  register works!
-</p>
+<h3>Register</h3>
+<hr>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
+  <div class="inputFields">
+    <input type="text" #Username formControlName="username" placeholder="User name"><br>
+    <input type="password" #Password formControlName="password" placeholder="Password"><br>
+    <input type="email" #Email formControlName="email" placeholder="Email address"><br>
+  </div>
+  
+  <button type="submit" [disabled]="!registerForm.valid">Register</button>
+</form>

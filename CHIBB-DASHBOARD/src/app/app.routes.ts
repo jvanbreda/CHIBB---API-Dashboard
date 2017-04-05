@@ -6,7 +6,7 @@ import { HouseComponent } from "app/house/house.component";
 import { SensorComponent } from "app/sensor/sensor.component";
 
 const APP_ROUTES: Routes = [
-    {path: '', redirectTo: '/login', pathMatch: 'full'},
+    {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'home', component: HomeComponent},

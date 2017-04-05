@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
@@ -11,6 +11,8 @@ import { HouseComponent } from './house/house.component';
 import { SensorComponent } from './sensor/sensor.component';
 import { HomeComponent } from './home/home.component';
 import { routing } from "app/app.routes";
+import { TokenManager } from "app/services/token-manager.service";
+import { HttpService } from "app/services/http.service";
 
 @NgModule({
   declarations: [
@@ -25,10 +27,11 @@ import { routing } from "app/app.routes";
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     routing
   ],
-  providers: [],
+  providers: [TokenManager, HttpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
