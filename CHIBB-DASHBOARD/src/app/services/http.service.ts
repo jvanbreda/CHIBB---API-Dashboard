@@ -5,17 +5,22 @@ import 'rxjs/add/operator/toPromise'
 
 @Injectable()
 export class HttpService {
-    constructor(private _http: Http){ }
-
-    register(user: User) {
-        var json = JSON.stringify({ username: user.username, password: user.password, email: user.email });
-        var headers = new Headers(
+    private headers = new Headers(
             {
                 "Content-type":  "application/json; charset=utf-8",
                 "Access-Control-Allow-Origin": "*"
             });
-        var options = new RequestOptions({ headers: headers })
+    private options = new RequestOptions({headers: this.headers});
 
-        return this._http.post("http://localhost:8081/user/register", json, options).toPromise();      
+    constructor(private _http: Http){ }
+
+    register(user: User) {
+        var body = JSON.stringify({ username: user.username, password: user.password, email: user.email });
+        return this._http.post("http://localhost:8081/user/register", body, this.options).toPromise();      
+    }
+
+    login(username: string, password: string){
+        var body = JSON.stringify({username: username, password: password});
+        return this._http.post("http://localhost:8081/user/login", body, this.options).toPromise();
     }
 }

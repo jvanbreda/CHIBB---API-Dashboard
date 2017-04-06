@@ -32,12 +32,13 @@ export class RegisterComponent implements OnInit {
             break;
           case 201:
             alert("Your account has been created, log in to use this dashboard!");
-            this._router.navigate(['/login']);
+            this._router.navigateByUrl('login');
             break;
           }
         
-      }).catch(function(){
-        
+      }.bind(this))
+      .catch(function(error){
+        console.log(error);
       });
   }
 

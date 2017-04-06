@@ -3,16 +3,16 @@
     <div class="navbar-header">
       <a href="#" class="navbar-brand">CHIBB - Dashboard</a>
     </div>
-    <ul class="nav navbar-nav" *ngIf="_token !== ''">
+    <ul class="nav navbar-nav" *ngIf="_tokenManager.tokenSet">
       <li><a [routerLink]="['/houses']">Houses</a></li>
       <li><a [routerLink]="['/sensors']">Sensors</a></li>
     </ul>
-    <ul class="nav navbar-nav navbar-right" *ngIf="_token === ''">
+    <ul class="nav navbar-nav navbar-right" *ngIf="!_tokenManager.tokenSet">
       <li><a [routerLink]="['/register']"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
       <li><a [routerLink]="['/login']"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
     </ul>
-    <ul class="nav navbar-nav navbar-right" *ngIf="_token !== ''">
-      <li><a [routerLink]="['/home']"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+    <ul class="nav navbar-nav navbar-right" *ngIf="_tokenManager.tokenSet">
+      <li><a [routerLink]="['/home']" (click)="onLogout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
     </ul>
   </div>
 </nav>

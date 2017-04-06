@@ -6,11 +6,15 @@ import { TokenManager } from "app/services/token-manager.service";
   templateUrl: './nav-header.component.html'
 })
 export class NavHeaderComponent implements OnInit {
-  private _token = '';
 
   constructor(private _tokenManager: TokenManager) { }
 
   ngOnInit() {
   }
+
+  onLogout(){
+    this._tokenManager.removeToken();
+  }
+
 
 }

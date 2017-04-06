@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TokenManager } from "app/services/token-manager.service";
 
 @Component({
   selector: 'app-house',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HouseComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _tokenManager: TokenManager) { }
 
   ngOnInit() {
   }

@@ -1,3 +1,10 @@
-<p>
-  sensor works!
-</p>
+<!--div to show if logged in-->
+<div *ngIf="_tokenManager.tokenSet">
+  <p>Sensors works!</p>
+</div>
+
+
+<!--div to show if not logged in-->
+<div *ngIf=!_tokenManager.tokenSet>
+  <p>You are not logged in, please log in to see your sensors here.</p>
+</div>
