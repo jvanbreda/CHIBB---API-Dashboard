@@ -1,10 +1,10 @@
 <!--div to show if logged in-->
-<div *ngIf="_tokenManager.tokenSet">
+<div *ngIf="_tokenManager.isTokenSet()">
   <p>Houses works!</p>
 </div>
 
 
 <!--div to show if not logged in-->
-<div *ngIf=!_tokenManager.tokenSet>
+<div *ngIf=!_tokenManager.isTokenSet()>
   <p>You are not logged in, please log in to see your houses here.</p>
 </div>

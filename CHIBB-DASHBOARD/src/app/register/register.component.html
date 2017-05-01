@@ -1,11 +1,43 @@
-<h3>Register</h3>
-<hr>
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
-  <div class="inputFields">
-    <input type="text" #Username formControlName="username" placeholder="User name"><br>
-    <input type="password" #Password formControlName="password" placeholder="Password"><br>
-    <input type="email" #Email formControlName="email" placeholder="Email address"><br>
-  </div>
-  
-  <button type="submit" [disabled]="!registerForm.valid">Register</button>
-</form>
+<div class="jumbotron"> 
+  <h3>Register</h3>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
+    <div class="form-group">
+      
+      <div class="form-group" [ngClass]="{'has-error':!registerForm.controls['username'].valid}">
+        <input class="form-control" type="text" [formControl]="registerForm.controls['username']" placeholder="User name"><br>
+        <div *ngIf="registerForm.controls['username'].hasError('required') && registerForm.controls['username'].touched" class="alert alert-danger">
+          Please provide a user name
+        </div>
+        <div *ngIf="registerForm.controls['username'].hasError('minlength') && registerForm.controls['username'].touched" class="alert alert-danger">
+          Please use more than three characters
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': !registerForm.controls['password'].valid}">
+        <input class="form-control" type="password" [formControl]="registerForm.controls['password']" placeholder="Password"><br>
+        <div *ngIf="registerForm.controls['password'].hasError('required') && registerForm.controls['password'].touched" class="alert alert-danger">
+          Please provide a password
+        </div>
+        <div *ngIf="registerForm.controls['password'].hasError('minlength') && registerForm.controls['password'].touched" class="alert alert-danger">
+          Please use more than three characters
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': !registerForm.controls['email'].valid}">
+        <input class="form-control" type="email" [formControl]="registerForm.controls['email']" placeholder="Email address"><br>
+        <div *ngIf="registerForm.controls['email'].hasError('required') && registerForm.controls['email'].touched" class="alert alert-danger">
+          Please provide an email adress
+        </div>
+        <div *ngIf="registerForm.controls['email'].hasError('minlength') && registerForm.controls['email'].touched" class="alert alert-danger">
+          Please use more than three characters
+        </div>
+        <div *ngIf="registerForm.controls['email'].hasError('pattern') && registerForm.controls['email'].touched" class="alert alert-danger">
+          Please use a valid email address (xx@xx.xx)
+        </div>
+      </div>
+
+    </div>
+    
+    <button class="btn btn-primary" type="submit" [disabled]="!registerForm.valid">Register</button>
+  </form>
+</div>

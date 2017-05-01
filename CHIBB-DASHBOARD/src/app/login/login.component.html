@@ -1,10 +1,24 @@
-<h3>Login</h3>
-<hr>
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)">
-  <div class="inputFields">
-    <input type="text" #Username formControlName="username" placeholder="User name"><br>
-    <input type="password" #Password formControlName="password" placeholder="Password"><br>
-  </div>
-  
-  <button type="submit">Login</button>
-</form>
+<div class="jumbotron"> 
+  <h3>Login</h3>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)">
+    <div class="form-group">
+      
+      <div class="form-group" [ngClass]="{'has-error':!loginForm.controls['username'].valid}">
+        <input class="form-control" type="text" [formControl]="loginForm.controls['username']" placeholder="User name"><br>
+        <div *ngIf="loginForm.controls['username'].hasError('required') && loginForm.controls['username'].touched" class="alert alert-danger">
+          Please provide a user name
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': !loginForm.controls['password'].valid}">
+        <input class="form-control" type="password" [formControl]="loginForm.controls['password']" placeholder="Password"><br>
+        <div *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched" class="alert alert-danger">
+          Please provide a password
+        </div>
+      </div>
+
+    </div>
+    
+    <button class="btn btn-primary" type="submit" [disabled]="!loginForm.valid">Register</button>
+  </form>
+</div>
