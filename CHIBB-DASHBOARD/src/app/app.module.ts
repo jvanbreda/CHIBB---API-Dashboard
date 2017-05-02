@@ -13,6 +13,7 @@ import { HomeComponent } from './home/home.component';
 import { routing } from "app/app.routes";
 import { TokenManager } from "app/services/token-manager.service";
 import { HttpService } from "app/services/http.service";
+import { ConfigurationService } from "app/services/config.service";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { HttpService } from "app/services/http.service";
     HttpModule,
     routing
   ],
-  providers: [TokenManager, HttpService],
+  providers: [TokenManager, HttpService, ConfigurationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
