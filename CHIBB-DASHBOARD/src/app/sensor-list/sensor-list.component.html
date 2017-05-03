@@ -1,0 +1,87 @@
+<h3> Sensors </h3>
+<span> Here you can manage your sensors </span>
+<span> <button class="btn btn-success pull-right" (click)="createModal.open(); getHouses()"> Add new sensor </button>
+<hr>
+
+ <modal #createModal>
+      <modal-header [show-close]="true">
+          <h4 class="modal-title">Create a new sensor</h4>
+      </modal-header>
+      <modal-body>
+          <select #newHouse>
+            <option *ngFor="let house of houses">
+              {{house.hid}} -- {{house.address}}
+            </option>
+          </select> <br>
+          <input #newId type="text" placeholder="Sensor id"> <br>
+          <input #newType type="text" placeholder="Sensor type"> <br>
+          Attributes: <br>
+          <input #unitCheck type="checkbox" name="attributes" value= "unit"> Unit <br>
+          <input #valueCheck type="checkbox" name="attributes" value= "value"> Value <br>
+
+      </modal-body>
+      <modal-footer>
+        <button class="btn btn-success" (click)="createSensor(newHouse.value, newId.value, newType.value, [unitCheck, valueCheck]); createModal.close();"> Create </button>
+        <button class="btn btn-primary" (click)="createModal.close()"> Cancel </button>
+      </modal-footer>
+  </modal>
+
+<div *ngIf="sensors.length > 0">
+  <table class="table">
+    <thead class="thead-inverse">
+      <tr>
+        <th>Sensor id</th>
+        <th>Sensor type</th>
+        <th>Sensor attributes</th>
+        <th class="pull-right">Extra options</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sensor of sensors">
+        <th scope="row"> {{sensor.sid}} </th>
+        <td> {{sensor.type}} </td>
+        <td> {{sensor.attributes}} </td>
+        <td> 
+          <button type="button" class="btn btn-danger pull-right" (click)="deleteModal.open(); onSelectSensor(sensor)"> 
+            Delete sensor 
+          </button>
+          <button type="button" class="btn btn-warning pull-right" (click)="updateModal.open(); onSelectSensor(sensor)"> 
+            Update sensor
+          </button> 
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <modal #updateModal>
+      <modal-header [show-close]="true">
+          <h4 class="modal-title">Update attributes</h4>
+      </modal-header>
+      <modal-body>
+          New attributes: <br>
+          <input #unitCheck type="checkbox" name="attributes" value= "unit"> Unit <br>
+          <input #valueCheck type="checkbox" name="attributes" value= "value"> Value <br>
+      </modal-body>
+      <modal-footer>
+        <button class="btn btn-success" (click)="updateSensor(selectedSensor, [unitCheck, valueCheck])"> Submit change </button>
+        <button class="btn btn-primary" (click)="updateModal.close()"> Cancel </button>
+      </modal-footer>
+  </modal>
+
+  <modal #deleteModal>
+      <modal-header [show-close]="true">
+          <h4 class="modal-title">Warning</h4>
+      </modal-header>
+      <modal-body>
+          Are you sure you want to delete this sensor? All  records belonging to this sensor will be removed too!
+      </modal-body>
+      <modal-footer>
+        <button class="btn btn-danger" (click)="deleteSensor(selectedSensor)"> Delete </button>
+        <button class="btn btn-primary" (click)="deleteModal.close()"> Cancel </button>
+      </modal-footer>
+  </modal>
+</div>
+
+<div *ngIf="sensors.length === 0">
+  Nothing to show here! Click the button to add a new house to your collection!
+</div>

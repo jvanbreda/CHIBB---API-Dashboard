@@ -7,12 +7,10 @@ import { HttpService } from "app/services/http.service";
   templateUrl: './house.component.html',
   styleUrls: ['./house.component.css']
 })
-export class HouseComponent implements OnInit {
+export class HouseComponent {
 
   constructor(private _tokenManager: TokenManager, private _http: HttpService) { }
 
-  ngOnInit() {
-    this._http.requestHouses("ee");
-  }
+  
 
 }

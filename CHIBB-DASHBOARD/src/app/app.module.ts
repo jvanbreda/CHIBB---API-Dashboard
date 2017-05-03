@@ -14,6 +14,9 @@ import { routing } from "app/app.routes";
 import { TokenManager } from "app/services/token-manager.service";
 import { HttpService } from "app/services/http.service";
 import { ConfigurationService } from "app/services/config.service";
+import { HouseListComponent } from './house-list/house-list.component';
+import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { SensorListComponent } from './sensor-list/sensor-list.component';
 
 @NgModule({
   declarations: [
@@ -23,14 +26,17 @@ import { ConfigurationService } from "app/services/config.service";
     NavHeaderComponent,
     HouseComponent,
     SensorComponent,
-    HomeComponent
+    HomeComponent,
+    HouseListComponent,
+    SensorListComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    routing
+    routing,
+    Ng2Bs3ModalModule
   ],
   providers: [TokenManager, HttpService, ConfigurationService],
   bootstrap: [AppComponent]

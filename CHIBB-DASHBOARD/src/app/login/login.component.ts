@@ -22,12 +22,13 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(value) {
+    var scope = this;
     this._http.login(value.username, value.password)
-      .then(function (response) {
-        this._tokenManager.storeToken(response.json().result.token);
-        this._router.navigateByUrl('/houses');
-      }.bind(this))
-      .catch(function (error) {
+      .then(response => {
+        scope._tokenManager.storeToken(response.json().result.token);
+        scope._router.navigateByUrl('/houses');
+      })
+      .catch(error => {
         alert(error.json().message);
       })
   }

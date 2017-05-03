@@ -27,20 +27,21 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(value){
+    var scope = this;
     this._http.register(new User(value.username, value.password, value.email))
-      .then(function(response){
+      .then(response => {
         switch (response.status){
           case 200:
             alert("This name is already in use, pick another one please!");
             break;
           case 201:
             alert("Your account has been created, log in to use this dashboard!");
-            this._router.navigateByUrl('login');
+            scope._router.navigateByUrl('login');
             break;
           }
         
-      }.bind(this))
-      .catch(function(error){
+      })
+      .catch(error => {
         console.log(error);
       });
   }
