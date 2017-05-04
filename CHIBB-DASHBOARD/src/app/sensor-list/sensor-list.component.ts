@@ -39,14 +39,15 @@ export class SensorListComponent implements OnInit {
     return {"hid": hid, "sid": sid, "type": type, "attributes": attributes}
   }
 
-  createSensor(house:string, sid:string, type:string, checkboxes){
+  createSensor(house:string, sid:string, type:string, checkboxes, modal){
     this._http.createSensor(this.parseInput(house, sid, type, checkboxes))
       .then(response =>{
         switch (response.status){
           case 200:
-            console.log(response.json().result);
+            alert(response.json().result.error);
             break;
           case 201:
+            modal.close();
             this.getSensors();
             break;
         }

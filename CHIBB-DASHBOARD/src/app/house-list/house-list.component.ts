@@ -22,14 +22,15 @@ export class HouseListComponent implements OnInit {
     this.getHouses();
   }
 
-  createHouse(newId, newAddress){
+  createHouse(newId, newAddress, modal){
     this._http.createHouse(new House(newId, newAddress))
       .then(response =>{
         switch (response.status){
           case 200:
-            alert(response.json().result);
+            alert(response.json().result.error);
             break;
           case 201:
+            modal.close();
             this.getHouses();
             break;
         }
