@@ -5,6 +5,7 @@ import 'bootstrap';
 import 'jquery';
 import { Sensor } from "app/models/sensor.model";
 import { HouseListComponent } from "app/house-list/house-list.component";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-sensor-list',
@@ -16,19 +17,18 @@ export class SensorListComponent implements OnInit {
 
   private sensors: Sensor[];
   private houses: House[];
-  private selectedSensor: Sensor = {sid: "", type: "", attributes: []};
+  private selectedSensor: Sensor = {sid: "", type: "", location: "", attributes: []};
 
   private unitChecked:boolean = false;
   private valueChecked:boolean = false;
-  private typeChecked:boolean = false;
 
-  constructor(private _http: HttpService) { }
+  constructor(private _http: HttpService, private _router: Router) { }
 
   ngOnInit() {
     this.getSensors();
   }
 
-  parseInput(house:string, sid:string, type:string, checkboxes){
+  parseInput(house:string, sid:string, type:string, location:string,  checkboxes){
     var hid = house.substr(0, house.indexOf("--") - 1);
     var attributes = [];
     for(var i = 0; i < checkboxes.length; i++){
@@ -36,11 +36,11 @@ export class SensorListComponent implements OnInit {
         attributes.push(checkboxes[i].value);
       }
     }
-    return {"hid": hid, "sid": sid, "type": type, "attributes": attributes}
+    return {"hid": hid, "sid": sid, "type": type, "location": location, "attributes": attributes}
   }
 
-  createSensor(house:string, sid:string, type:string, checkboxes, modal){
-    this._http.createSensor(this.parseInput(house, sid, type, checkboxes))
+  createSensor(house:string, sid:string, type:string, location:string, checkboxes, modal){
+    this._http.createSensor(this.parseInput(house, sid, type, location, checkboxes))
       .then(response =>{
         switch (response.status){
           case 200:
@@ -64,7 +64,7 @@ export class SensorListComponent implements OnInit {
         switch (response.status){
           case 200:
             for(var i = 0; i < response.json().resultLength; i++){
-              this.sensors.push(new Sensor(response.json().result[i].sid, response.json().result[i].type, response.json().result[i].attributes));
+              this.sensors.push(new Sensor(response.json().result[i].sid, response.json().result[i].type, response.json().result[i].location, response.json().result[i].attributes));
             }
             break;
           case 204:
@@ -126,6 +126,10 @@ export class SensorListComponent implements OnInit {
 
   onSelectSensor(sensor:Sensor){
     this.selectedSensor = sensor;
+  }
+
+  goToSensorPage(){
+    this._router.navigate(['/sensors', this.selectedSensor.sid]);
   }
 
 }

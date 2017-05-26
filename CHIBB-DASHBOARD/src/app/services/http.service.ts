@@ -73,6 +73,11 @@ export class HttpService {
         return this._http.get(url, this.options).toPromise();
     }
 
+    getSensorsByHouseId(house:House){
+        var url = this.baseUrl + "sensor/house/" + house.hid + "/?token=" + this._tokenManager.retrieveToken();
+        return this._http.get(url, this.options).toPromise();
+    }
+
     updateSensor(sensor:Sensor, newAttributes:string[]){
         var url = this.baseUrl + "sensor/" + sensor.sid + "/?token=" + this._tokenManager.retrieveToken();
         var body = JSON.stringify({ sid: sensor.sid, type: sensor.type, attributes: newAttributes})

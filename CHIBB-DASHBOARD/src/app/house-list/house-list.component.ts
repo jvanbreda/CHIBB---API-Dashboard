@@ -3,6 +3,7 @@ import { HttpService } from "app/services/http.service";
 import { House } from "app/models/house.model";
 import 'bootstrap';
 import 'jquery';
+import { Sensor } from "app/models/sensor.model";
 
 @Component({
   selector: 'app-house-list',
@@ -15,6 +16,7 @@ export class HouseListComponent implements OnInit {
 
   private houses: House[];
   private selectedHouse: House = {hid: "", address: ""};
+  private houseSensors: Sensor[];
 
   constructor(private _http: HttpService) { }
 
@@ -82,6 +84,26 @@ export class HouseListComponent implements OnInit {
 
   onSelectHouse(house:House){
     this.selectedHouse = house;
+  }
+
+  getSensorsFromSelectedHouse(){
+    this.houseSensors = [];
+    this._http.getSensorsByHouseId(this.selectedHouse)
+      .then(response => {
+        switch (response.status){
+          case 200:
+            for(var i = 0; i < response.json().resultLength; i++){
+              this.houseSensors.push(new Sensor(response.json().result[i].sid, response.json().result[i].type, response.json().result[i].location, response.json().result[i].attributes));
+            }
+            break;
+          case 204:
+            this.houses = [];
+            break;
+        }
+      })
+      .catch(error => {
+        alert(error);
+      });
   }
 
 }

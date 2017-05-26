@@ -17,6 +17,9 @@ import { ConfigurationService } from "app/services/config.service";
 import { HouseListComponent } from './house-list/house-list.component';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { SensorListComponent } from './sensor-list/sensor-list.component';
+import { SensorDataComponent } from './sensor-data/sensor-data.component';
+
+import { ChartModule } from 'angular2-highcharts';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,8 @@ import { SensorListComponent } from './sensor-list/sensor-list.component';
     SensorComponent,
     HomeComponent,
     HouseListComponent,
-    SensorListComponent
+    SensorListComponent,
+    SensorDataComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +40,8 @@ import { SensorListComponent } from './sensor-list/sensor-list.component';
     ReactiveFormsModule,
     HttpModule,
     routing,
-    Ng2Bs3ModalModule
+    Ng2Bs3ModalModule,
+    ChartModule.forRoot(require('highcharts'))
   ],
   providers: [TokenManager, HttpService, ConfigurationService],
   bootstrap: [AppComponent]

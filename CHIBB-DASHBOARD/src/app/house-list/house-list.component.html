@@ -1,5 +1,5 @@
 <h3> Houses </h3>
-<span> Here you can manage your houses </span>
+<span> Here you can manage your houses. Click on a house to inspect the associated sensors </span>
 <span> <button class="btn btn-success pull-right" (click)="createModal.open()"> Add new house </button>
 <hr>
 
@@ -18,7 +18,7 @@
   </modal>
 
 <div *ngIf="houses.length > 0">
-  <table class="table">
+  <table class="table table-hover">
     <thead class="thead-inverse">
       <tr>
         <th>House #</th>
@@ -27,7 +27,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let house of houses">
+      <tr *ngFor="let house of houses" (click)="onSelectHouse(house); getSensorsFromSelectedHouse()">
         <th scope="row"> {{house.hid}} </th>
         <td> {{house.address}} </td>
         <td> 
@@ -36,7 +36,7 @@
           </button>
           <button type="button" class="btn btn-warning pull-right" (click)="updateModal.open(); onSelectHouse(house)"> 
             Update address
-          </button> 
+          </button>
         </td>
       </tr>
     </tbody>
@@ -60,13 +60,36 @@
           <h4 class="modal-title">Warning</h4>
       </modal-header>
       <modal-body>
-          Are you sure you want to delete this house? All sensors and records belonging to this house will be removed too!
+          Are you sure you want to delete <b>{{selectedHouse.hid}}</b>? All sensors and records belonging to this house will be removed too!
       </modal-body>
       <modal-footer>
         <button class="btn btn-danger" (click)="deleteHouse(selectedHouse)"> Delete </button>
         <button class="btn btn-primary" (click)="deleteModal.close()"> Cancel </button>
       </modal-footer>
   </modal>
+</div>
+
+<div *ngIf="selectedHouse.hid !== ''">
+  <table class="table">
+    <caption>Sensors of house {{selectedHouse.hid}}</caption>
+    <thead>
+      <tr>
+        <th>Sensor id</th>
+        <th>Sensor type</th>
+        <th>Sensor location</th>
+        <th>Sensor attributes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!--Change to conditional class once it can be detected is a sensor is offline or not-->
+      <tr *ngFor="let sensor of houseSensors">
+        <th class="bg-danger"> {{sensor.sid}} </th>
+        <td> {{sensor.type}} </td>
+        <td> {{sensor.location}} </td>
+        <td> {{sensor.attributes}} </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <div *ngIf="houses.length === 0">
