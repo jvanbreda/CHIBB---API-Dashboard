@@ -1,0 +1,4 @@
+<div class="chart pull-left" [ngClass]="(liveData.length > 0) ? 'visible' : 'hidden'">
+    <h3>Live data from sensor {{sid}} <span *ngIf="unit != null"> in {{unit}}</span></h3>
+    <div id="valueChartLive">Loading...</div>
+  </div>

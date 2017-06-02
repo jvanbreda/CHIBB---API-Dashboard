@@ -83,7 +83,7 @@
     <tbody>
       <!--Change to conditional class once it can be detected is a sensor is offline or not-->
       <tr *ngFor="let sensor of houseSensors">
-        <th class="bg-danger"> {{sensor.sid}} </th>
+        <th> {{sensor.sid}} </th>
         <td> {{sensor.type}} </td>
         <td> {{sensor.location}} </td>
         <td> {{sensor.attributes}} </td>

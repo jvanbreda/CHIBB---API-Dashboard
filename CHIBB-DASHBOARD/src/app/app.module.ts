@@ -17,9 +17,12 @@ import { ConfigurationService } from "app/services/config.service";
 import { HouseListComponent } from './house-list/house-list.component';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { SensorListComponent } from './sensor-list/sensor-list.component';
+import { GraphGeneratorService } from "app/services/graphgenerator.service";
 import { SensorDataComponent } from './sensor-data/sensor-data.component';
-
-import { ChartModule } from 'angular2-highcharts';
+import { DataNavComponent } from './data-nav/data-nav.component';
+import { ScreenManagerService } from "app/services/screen-manager.service";
+import { SensorDataHistoryComponent } from './sensor-data-history/sensor-data-history.component';
+import { SensorDataLiveComponent } from './sensor-data-live/sensor-data-live.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,9 @@ import { ChartModule } from 'angular2-highcharts';
     HouseListComponent,
     SensorListComponent,
     SensorDataComponent,
+    DataNavComponent,
+    SensorDataHistoryComponent,
+    SensorDataLiveComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,10 +46,9 @@ import { ChartModule } from 'angular2-highcharts';
     ReactiveFormsModule,
     HttpModule,
     routing,
-    Ng2Bs3ModalModule,
-    ChartModule.forRoot(require('highcharts'))
+    Ng2Bs3ModalModule
   ],
-  providers: [TokenManager, HttpService, ConfigurationService],
+  providers: [TokenManager, HttpService, ConfigurationService, GraphGeneratorService, ScreenManagerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

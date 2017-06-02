@@ -17,10 +17,7 @@ export class SensorListComponent implements OnInit {
 
   private sensors: Sensor[];
   private houses: House[];
-  private selectedSensor: Sensor = {sid: "", type: "", location: "", attributes: []};
-
-  private unitChecked:boolean = false;
-  private valueChecked:boolean = false;
+  private selectedSensor: Sensor = {sid: "", type: "", location: "", attributes: [], state: "Active"};
 
   constructor(private _http: HttpService, private _router: Router) { }
 
@@ -30,7 +27,7 @@ export class SensorListComponent implements OnInit {
 
   parseInput(house:string, sid:string, type:string, location:string,  checkboxes){
     var hid = house.substr(0, house.indexOf("--") - 1);
-    var attributes = [];
+    var attributes = ["timestamp"];
     for(var i = 0; i < checkboxes.length; i++){
       if(checkboxes[i].checked){
         attributes.push(checkboxes[i].value);
@@ -64,7 +61,7 @@ export class SensorListComponent implements OnInit {
         switch (response.status){
           case 200:
             for(var i = 0; i < response.json().resultLength; i++){
-              this.sensors.push(new Sensor(response.json().result[i].sid, response.json().result[i].type, response.json().result[i].location, response.json().result[i].attributes));
+              this.sensors.unshift(new Sensor(response.json().result[i].sid, response.json().result[i].type, response.json().result[i].location, response.json().result[i].attributes));
             }
             break;
           case 204:
@@ -84,7 +81,7 @@ export class SensorListComponent implements OnInit {
         switch (response.status){
           case 200:
             for(var i = 0; i < response.json().resultLength; i++){
-              this.houses.push(new House(response.json().result[i].hid, response.json().result[i].address));
+              this.houses.unshift(new House(response.json().result[i].hid, response.json().result[i].address));
             }
             break;
           case 204:
@@ -98,10 +95,10 @@ export class SensorListComponent implements OnInit {
   }
 
   updateSensor(sensor:Sensor, newAttributes){
-    var attributes = []
+    var attributes = ["timestamp"]
     for(var i = 0; i < newAttributes.length; i++){
       if(newAttributes[i].checked){
-        attributes.push(newAttributes[i].value);
+        attributes.unshift(newAttributes[i].value);
       }
     }
 

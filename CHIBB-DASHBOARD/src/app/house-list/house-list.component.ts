@@ -49,7 +49,7 @@ export class HouseListComponent implements OnInit {
         switch (response.status){
           case 200:
             for(var i = 0; i < response.json().resultLength; i++){
-              this.houses.push(new House(response.json().result[i].hid, response.json().result[i].address));
+              this.houses.unshift(new House(response.json().result[i].hid, response.json().result[i].address));
             }
             break;
           case 204:
@@ -93,7 +93,7 @@ export class HouseListComponent implements OnInit {
         switch (response.status){
           case 200:
             for(var i = 0; i < response.json().resultLength; i++){
-              this.houseSensors.push(new Sensor(response.json().result[i].sid, response.json().result[i].type, response.json().result[i].location, response.json().result[i].attributes));
+              this.houseSensors.unshift(new Sensor(response.json().result[i].sid, response.json().result[i].type, response.json().result[i].location, response.json().result[i].attributes));
             }
             break;
           case 204:

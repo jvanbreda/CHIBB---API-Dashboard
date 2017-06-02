@@ -1,8 +1,11 @@
-<p>
+<app-data-nav></app-data-nav>
 
-  We received sensor with sid {{sid}}
+<h2>Data charts for sensor {{sid}}</h2>
 
-  <chart [options]="options"></chart>
+<div [ngClass]="(screenManager.getScreenState() === screenStates.HISTORICAL_DATA) ? 'visible' : 'hidden'">
+    <app-sensor-data-history></app-sensor-data-history>
+</div>
 
-
-</p>
+<div [ngClass]="(screenManager.getScreenState() === screenStates.LIVE_DATA) ? 'visible': 'hidden'">
+  <app-sensor-data-live></app-sensor-data-live>
+</div>

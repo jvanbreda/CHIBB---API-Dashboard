@@ -1,0 +1,9 @@
+<button (click)="getData()"> Refresh data </button> <br>
+  From: <input #fromTimestamp type="datetime-local" name="fromTimestamp"/>
+  To: <input #toTimestamp type="datetime-local" name="toTimestamp"/> 
+  <button (click)="setWindow(fromTimestamp.value, toTimestamp.value)">Get specific data </button>
+
+<div class="chart pull-left" [ngClass]="(valueData.length > 0) ? 'visible' : 'hidden'">
+    <h3>Readings from sensor {{sid}} <span *ngIf="unit != null"> in {{unit}}</span></h3>
+    <div id="valueChartHistory">Loading...</div>
+  </div>

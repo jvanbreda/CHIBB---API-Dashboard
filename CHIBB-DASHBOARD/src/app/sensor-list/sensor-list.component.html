@@ -1,11 +1,6 @@
 <h3> Sensors </h3>
 <span>
-  Here you can manage your sensors. The cell containing the id can have three colors:
-  <ul>
-    <li class="bg-success">A green cell means the sensor is up and running.</li>
-    <li class="bg-warning">An orange cell indicates that a sensor did not receive data within 3 normal intervals.</li>
-    <li class="bg-danger">A red cell shows when a sensor did not receive any data within 30 normal intervals and may be broken. </li>
-  </ul>
+  Here you can manage your sensors. Click on a sensor to go to the detail page
 </span>
 <span> <button class="btn btn-success pull-right" (click)="createModal.open(); getHouses()"> Add new sensor </button>
 <hr>
@@ -27,10 +22,12 @@
           Attributes: <br>
           <input #unitCheck type="checkbox" name="attributes" value= "unit"> Unit <br>
           <input #valueCheck type="checkbox" name="attributes" value= "value"> Value <br>
+          <input #sensorStateCheck type="checkbox" name="attributes" value= "sensorState"> Sensor state <br>
+          <input #sensorBatteryLevelCheck type="checkbox" name="attributes" value= "sensorBatteryLevel"> Battery level <br>
 
       </modal-body>
       <modal-footer>
-        <button class="btn btn-success" (click)="createSensor(newHouse.value, newId.value, newType.value, newLocation.value, [unitCheck, valueCheck], createModal)"> Create </button>
+        <button class="btn btn-success" (click)="createSensor(newHouse.value, newId.value, newType.value, newLocation.value, [unitCheck, valueCheck, sensorStateCheck, sensorBatteryLevelCheck], createModal)"> Create </button>
         <button class="btn btn-primary" (click)="createModal.close()"> Cancel </button>
       </modal-footer>
   </modal>
@@ -48,11 +45,11 @@
     </thead>
     <tbody>
       <!--Change to conditional class once it can be detected is a sensor is offline or not-->
-      <tr *ngFor="let sensor of sensors" (click)="onSelectSensor(sensor); goToSensorPage()">
-        <th class="bg-danger"> {{sensor.sid}} </th>
-        <td> {{sensor.type}} </td>
-        <td> {{sensor.location}} </td>
-        <td> {{sensor.attributes}} </td>
+      <tr *ngFor="let sensor of sensors">
+          <th (click)="onSelectSensor(sensor); goToSensorPage()"> {{sensor.sid}} </th>
+          <td (click)="onSelectSensor(sensor); goToSensorPage()"> {{sensor.type}} </td>
+          <td (click)="onSelectSensor(sensor); goToSensorPage()"> {{sensor.location}} </td>
+          <td (click)="onSelectSensor(sensor); goToSensorPage()"> {{sensor.attributes}} </td>
         <td> 
           <button type="button" class="btn btn-danger pull-right" (click)="deleteModal.open(); onSelectSensor(sensor)"> 
             Delete sensor 
@@ -73,9 +70,11 @@
           New attributes: <br>
           <input #unitCheck type="checkbox" name="attributes" value= "unit"> Unit <br>
           <input #valueCheck type="checkbox" name="attributes" value= "value"> Value <br>
+          <input #sensorStateCheck type="checkbox" name="attributes" value= "sensorState"> Sensor state <br>
+          <input #sensorBatteryLevelCheck type="checkbox" name="attributes" value= "sensorBatteryLevel"> Battery level <br>
       </modal-body>
       <modal-footer>
-        <button class="btn btn-success" (click)="updateSensor(selectedSensor, [unitCheck, valueCheck])"> Submit change </button>
+        <button class="btn btn-success" (click)="updateSensor(selectedSensor, [unitCheck, valueCheck, sensorStateCheck, sensorBatteryLevelCheck])"> Submit change </button>
         <button class="btn btn-primary" (click)="updateModal.close()"> Cancel </button>
       </modal-footer>
   </modal>

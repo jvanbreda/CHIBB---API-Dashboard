@@ -88,4 +88,24 @@ export class HttpService {
         var url = this.baseUrl + "sensor/" + sensor.sid + "/?token=" + this._tokenManager.retrieveToken();
         return this._http.delete(url, this.options).toPromise();   
     }
+
+    getSensorData(sensorId:string){
+        var url = this.baseUrl + "sensor/data/" + sensorId + "/?token=" + this._tokenManager.retrieveToken();
+        return this._http.get(url, this.options).toPromise();
+    }
+
+    getSensorState(sensorId:string){
+        var url = this.baseUrl + "sensor/status/" + sensorId + "/?token=" + this._tokenManager.retrieveToken();
+        return this._http.get(url, this.options).toPromise(); 
+    }
+
+    getLatestSensorData(sensorId:string){
+        var url = this.baseUrl + "sensor/latest/" + sensorId + "/?token=" + this._tokenManager.retrieveToken();
+        return this._http.get(url, this.options).toPromise();
+    }
+
+    getSensorDataWithinTimeFrame(sensorId:string, fromTime:Number, toTime:Number){
+        var url = this.baseUrl + "sensor/data" + sensorId + "/" + fromTime + "/" + toTime + "/?token=" + this._tokenManager.retrieveToken();
+        return this._http.get(url, this.options).toPromise();
+    }
 }
