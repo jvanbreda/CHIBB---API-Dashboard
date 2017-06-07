@@ -23,6 +23,7 @@ import { DataNavComponent } from './data-nav/data-nav.component';
 import { ScreenManagerService } from "app/services/screen-manager.service";
 import { SensorDataHistoryComponent } from './sensor-data-history/sensor-data-history.component';
 import { SensorDataLiveComponent } from './sensor-data-live/sensor-data-live.component';
+import { LoginGuardService } from './services/login-guard.service';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,14 @@ import { SensorDataLiveComponent } from './sensor-data-live/sensor-data-live.com
     routing,
     Ng2Bs3ModalModule
   ],
-  providers: [TokenManager, HttpService, ConfigurationService, GraphGeneratorService, ScreenManagerService],
+  providers: [
+    TokenManager, 
+    HttpService, 
+    ConfigurationService, 
+    GraphGeneratorService, 
+    ScreenManagerService,
+    LoginGuardService
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
