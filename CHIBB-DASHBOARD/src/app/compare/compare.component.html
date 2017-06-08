@@ -1,0 +1,41 @@
+<h3>Compare data </h3>
+<p>Here you can compare two sensors from the same house with one another. Just select which sensors you want to 
+    see in the graph below.
+</p>
+
+<div class="chart pull-left" id="compareArea">
+
+</div>
+
+<br><br><br>
+<img id="loader" src="/assets/loading.png" class="spinning hidden">
+
+<div class="block pull-right">
+  House: 
+  <select #houseSelector (change)="onChangeHouse(houseSelector.value);">
+    <option selected="true" disabled>Select a house</option>
+    <option *ngFor="let house of houses">
+      {{house.hid}} -- {{house.address}}
+    </option>
+  </select>
+
+  <div *ngIf="selectedHouse">
+    Sensor 1: 
+    <select #sensor1Selector>
+      <option *ngFor="let sensor of sensors">
+        {{sensor.sid}} -- {{sensor.location}}
+      </option>
+    </select> 
+    <br>
+    Sensor 2: 
+    <select #sensor2Selector>
+      <option *ngFor="let sensor of sensors">
+        {{sensor.sid}} -- {{sensor.location}}
+      </option>
+    </select> 
+    <button (click)="setSelectedSensors(sensor1Selector.value, sensor2Selector.value)">Get data</button>
+  </div>
+</div>
+
+
+

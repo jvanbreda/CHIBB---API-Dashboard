@@ -146,4 +146,6 @@ export class SensorListComponent implements OnInit {
     this._router.navigate(['/sensors', this.selectedSensor.sid]);
   }
 
+  
+
 }

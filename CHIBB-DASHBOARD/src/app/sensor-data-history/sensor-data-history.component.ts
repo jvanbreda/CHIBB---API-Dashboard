@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { Http } from "@angular/http";
 import { HttpService } from "app/services/http.service";
-import { Record } from "app/models/Record.model";
+import { Record } from "app/models/record.model";
 import { GraphGeneratorService } from "app/services/graphgenerator.service";
 import { ScreenManagerService } from "app/services/screen-manager.service";
 import { ScreenStates } from "app/screenstates";
@@ -69,7 +69,6 @@ export class SensorDataHistoryComponent implements OnInit, OnDestroy {
     var w3;
     var w4;
     var w5;
-    var loadingWorker;
 
     var workers = [w1, w2, w3, w4, w5];
 

@@ -24,6 +24,7 @@ import { ScreenManagerService } from "app/services/screen-manager.service";
 import { SensorDataHistoryComponent } from './sensor-data-history/sensor-data-history.component';
 import { SensorDataLiveComponent } from './sensor-data-live/sensor-data-live.component';
 import { LoginGuardService } from './services/login-guard.service';
+import { CompareComponent } from './compare/compare.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { LoginGuardService } from './services/login-guard.service';
     DataNavComponent,
     SensorDataHistoryComponent,
     SensorDataLiveComponent,
+    CompareComponent,
   ],
   imports: [
     BrowserModule,

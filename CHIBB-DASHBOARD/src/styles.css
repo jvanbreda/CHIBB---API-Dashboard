@@ -16,7 +16,7 @@
 }
 
 .block {
-	font-size: 1.5em;
+	font-size: 1.25em;
 	width: 30%;
 	border: 1px solid black;
 	border-radius: 2%;
@@ -31,4 +31,26 @@
 
 #loader {
 	margin-bottom: 11%;
+}
+
+.spinning {
+    animation: spin 1s infinite linear;
+    -webkit-animation: spin 1s infinite linear;
+	transform-origin: 50% 50%;
+	width: 10%;
+	height: 10%;
+	margin: 0 auto;
+}
+
+@keyframes spin { 
+	100% { 
+		-webkit-transform: rotate(360deg); 
+		transform:rotate(360deg); 
+	} 
+}
+
+@-webkit-keyframes spin {
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
 }

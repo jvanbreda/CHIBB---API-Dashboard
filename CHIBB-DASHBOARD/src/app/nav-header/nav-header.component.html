@@ -6,6 +6,7 @@
     <ul class="nav navbar-nav" *ngIf="_tokenManager.isTokenSet()">
       <li><a [routerLink]="['/houses']">Houses</a></li>
       <li><a [routerLink]="['/sensors']">Sensors</a></li>
+      <li><a [routerLink]="['/compare']">Compare Data</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right" *ngIf="!_tokenManager.isTokenSet()">
       <li><a [routerLink]="['/register']"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
