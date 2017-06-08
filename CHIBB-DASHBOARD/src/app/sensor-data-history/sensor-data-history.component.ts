@@ -6,6 +6,7 @@ import { Record } from "app/models/Record.model";
 import { GraphGeneratorService } from "app/services/graphgenerator.service";
 import { ScreenManagerService } from "app/services/screen-manager.service";
 import { ScreenStates } from "app/screenstates";
+import { Sensor } from 'app/models/sensor.model';
 
 declare var vis: any;
 
@@ -17,8 +18,8 @@ declare var vis: any;
 export class SensorDataHistoryComponent implements OnInit, OnDestroy {
   private sid: string;
   private subscription: any;
-  private date = Date;
-  private number = Number;
+
+  private sensor:Sensor;
 
   private records: Record[] = [];
 
@@ -44,8 +45,14 @@ export class SensorDataHistoryComponent implements OnInit, OnDestroy {
   }
 
   getData() {
+    document.getElementById("valueChartHistory").innerHTML = "";
+    document.getElementById("loader").className = "spinning visible";
     var scope = this;
-    this._http.getSensorData(this.sid)
+    var d1 = new Date();
+    var d2 = new Date();
+    d1.setHours(d1.getHours() - 1);
+
+    this._http.getSensorDataWithinTimeFrame(this.sid, d1.getTime(), d2.getTime())
       .then(result => {
         console.log("Done requesting data " + (Date.now() - this.start))
         this.dataToArray(result);
@@ -62,88 +69,12 @@ export class SensorDataHistoryComponent implements OnInit, OnDestroy {
     var w3;
     var w4;
     var w5;
+    var loadingWorker;
+
+    var workers = [w1, w2, w3, w4, w5];
+
     if(typeof(Worker) !== undefined){
-      var scope = this;
-      w1 = new Worker("/app/workers/data_workers.js");
-      w2 = new Worker("/app/workers/data_workers.js");
-      w3 = new Worker("/app/workers/data_workers.js");
-      w4 = new Worker("/app/workers/data_workers.js");
-      w5 = new Worker("/app/workers/data_workers.js");
-
-      w1.postMessage(result.json().result.slice(0, length / 5));
-      w2.postMessage(result.json().result.slice(length / 5, 2 * (length / 5)));
-      w3.postMessage(result.json().result.slice(2 * (length / 5), 3 * (length / 5)));
-      w4.postMessage(result.json().result.slice(3 * (length / 5), 4 * (length / 5)));
-      w5.postMessage(result.json().result.slice(4 * (length / 5), 5 * (length / 5)));
-
-      var doneEvent = new CustomEvent('workerDone');
-      var workersDone = 0;
-      document.addEventListener('workerDone', function(){
-        workersDone++;
-        if(workersDone === 5){
-          console.log("Done placing data in record array " +  (Date.now() - scope.start));
-
-          scope.makeGraphs();
-        }
-      }, false);
-
-
-      w1.onmessage = function(event){
-        switch(event.data){
-          case "Done":
-            document.dispatchEvent(doneEvent);
-            break;
-          default:
-            var record = event.data
-            scope.records.unshift(new Record(record.value, record.timestamp, record.sensorState, record.sensorBatteryLevel, record.unit));
-            break;
-        }
-       
-      }
-      w2.onmessage = function(event){
-        switch(event.data){
-          case "Done":
-            document.dispatchEvent(doneEvent);
-            break;
-          default:
-            var record = event.data
-            scope.records.unshift(new Record(record.value, record.timestamp, record.sensorState, record.sensorBatteryLevel, record.unit));
-            break;
-        }
-      }
-      w3.onmessage = function(event){
-        switch(event.data){
-          case "Done":
-            document.dispatchEvent(doneEvent);
-            break;
-          default:
-            var record = event.data
-            scope.records.unshift(new Record(record.value, record.timestamp, record.sensorState, record.sensorBatteryLevel, record.unit));
-            break;
-        }
-      }
-      w4.onmessage = function(event){
-        switch(event.data){
-          case "Done":
-            document.dispatchEvent(doneEvent);
-            break;
-          default:
-            var record = event.data
-            scope.records.unshift(new Record(record.value, record.timestamp, record.sensorState, record.sensorBatteryLevel, record.unit));
-            break;
-        }
-      }
-      w5.onmessage = function(event){
-        switch(event.data){
-          case "Done":
-            document.dispatchEvent(doneEvent);
-            break;
-          default:
-            var record = event.data
-            scope.records.unshift(new Record(record.value, record.timestamp, record.sensorState, record.sensorBatteryLevel, record.unit));
-            break;
-        }
-      }
+      this.initWorkers(result, workers);
     }
     else {
       alert("Your browser does not support workers. Therefore loading data will take longer...")
@@ -152,6 +83,36 @@ export class SensorDataHistoryComponent implements OnInit, OnDestroy {
         this.records.unshift(new Record(record.value, record.timestamp, record.sensorState, record.sensorBatteryLevel, record.unit));
       }
     }
+  }
+
+  initWorkers(result, workers){
+    var length = result.json().result.length;
+    var scope = this;
+      var doneEvent = new CustomEvent('workerDone');
+      document.addEventListener('workerDone', function(){
+        workersDone++;
+        if(workersDone === workers.length){
+          console.log("Done placing data in record array " +  (Date.now() - scope.start));
+          scope.makeGraphs();
+        }
+      }, false);
+
+      var workersDone = 0;
+      for(var i = 0; i < workers.length; i++){
+        workers[i] = new Worker("/app/workers/data_workers.js");
+        workers[i].postMessage(result.json().result.slice(i * (length / workers.length), (i + 1) * (length / workers.length)));
+        workers[i].onmessage = function(event){
+          switch(event.data){
+            case "Done":
+              document.dispatchEvent(doneEvent);
+              break;
+            default:
+              var record = event.data
+              scope.records.unshift(new Record(record.value, record.timestamp, record.sensorState, record.sensorBatteryLevel, record.unit));
+              break;
+          }
+        }
+      }
   }
 
   makeGraphs(){
@@ -170,20 +131,22 @@ export class SensorDataHistoryComponent implements OnInit, OnDestroy {
     console.log("Done formatting data " + (Date.now() - this.start));
 
     var valueArea = document.getElementById('valueChartHistory');
-    
 
-    var valuleDataSet = new vis.DataSet(this.valueData);
+    var valueDataSet = new vis.DataSet(this.valueData);
     var sensorStateDataSet = new vis.DataSet(this.sensorStateData);
 
     console.log("Done making datasets " + (Date.now() - this.start))
 
     var options = {
       start: fromTimestamp,
-      end: toTimestamp
+      end: toTimestamp,
+      height: 400,
+      
     };
-    valueArea.innerHTML = "";
-    this.valueChart = new vis.Graph2d(valueArea, valuleDataSet, options);
+
     
+    this.valueChart = new vis.Graph2d(valueArea, valueDataSet, options);
+    document.getElementById("loader").className = "spinning hidden"
     console.log("Done drawing charts " + (Date.now() - this.start));
   }
 

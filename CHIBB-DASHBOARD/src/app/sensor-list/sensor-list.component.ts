@@ -17,12 +17,26 @@ export class SensorListComponent implements OnInit {
 
   private sensors: Sensor[];
   private houses: House[];
-  private selectedSensor: Sensor = {sid: "", type: "", location: "", attributes: [], state: "Active"};
+  private selectedSensor: Sensor = {sid: "", type: "", location: "", attributes: [], state: ""};
+
+  private SENSOR_TYPES: string[] = ["Temperature", "Light", "pH", "Soil humidity", "Door"]
 
   constructor(private _http: HttpService, private _router: Router) { }
 
   ngOnInit() {
     this.getSensors();
+  }
+
+  getSensorStates(){
+    this.sensors.forEach((item, index) => {
+      this._http.getSensorState(item.sid)
+      .then(result => {
+        this.sensors.find(x => x.sid === result.json().result.sid).state = result.json().result.status;
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    })
   }
 
   parseInput(house:string, sid:string, type:string, location:string,  checkboxes){
@@ -63,6 +77,9 @@ export class SensorListComponent implements OnInit {
             for(var i = 0; i < response.json().resultLength; i++){
               this.sensors.unshift(new Sensor(response.json().result[i].sid, response.json().result[i].type, response.json().result[i].location, response.json().result[i].attributes));
             }
+            setInterval(() => {
+              this.getSensorStates()
+            }, 1000)
             break;
           case 204:
             this.sensors = [];

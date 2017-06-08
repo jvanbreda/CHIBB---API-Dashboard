@@ -1,9 +1,28 @@
-<button (click)="getData()"> Refresh data </button> <br>
+<div class="chart pull-left" [ngClass]="(valueData.length > 0) ? 'visible' : 'hidden'">
+  <h3>Readings from sensor {{sid}} <span *ngIf="unit != null"> in {{unit}}</span></h3>
+    <div id="valueChartHistory"></div>
+</div>
+
+<div class="block pull-right" id="infoDiv" *ngIf="sensor">
+  <div class="blockTitle" id="infoTitle">
+    Sensor information
+  </div>
+  <div class="blockContent" id="infoContent">
+    <ul class="no-bullets">
+      <li><span class="glyphicon glyphicon-tag"></span>  <b>{{sensor.sid}}</b></li>
+      <li><span class="glyphicon glyphicon-home"></span>  <b>{{sensor.hid}}</b></li>
+      <li><span class="glyphicon glyphicon-map-marker"></span>  <b>{{sensor.location}}</b></li>
+    </ul>
+  </div>
+</div>
+
+<div class="block pull-right">
+  <button (click)="getData()"> Refresh data </button> <br>
   From: <input #fromTimestamp type="datetime-local" name="fromTimestamp"/>
   To: <input #toTimestamp type="datetime-local" name="toTimestamp"/> 
-  <button (click)="setWindow(fromTimestamp.value, toTimestamp.value)">Get specific data </button>
+  <button (click)="setWindow(fromTimestamp.value, toTimestamp.value)">See specific data </button>
+</div>
 
-<div class="chart pull-left" [ngClass]="(valueData.length > 0) ? 'visible' : 'hidden'">
-    <h3>Readings from sensor {{sid}} <span *ngIf="unit != null"> in {{unit}}</span></h3>
-    <div id="valueChartHistory">Loading...</div>
-  </div>
+
+<br><br><br>
+<img id="loader" src="/assets/loading.png" class="spinning">

@@ -1,11 +1,21 @@
 <app-data-nav></app-data-nav>
-
-<h2>Data charts for sensor {{sid}}</h2>
-
 <div [ngClass]="(screenManager.getScreenState() === screenStates.HISTORICAL_DATA) ? 'visible' : 'hidden'">
     <app-sensor-data-history></app-sensor-data-history>
 </div>
 
 <div [ngClass]="(screenManager.getScreenState() === screenStates.LIVE_DATA) ? 'visible': 'hidden'">
   <app-sensor-data-live></app-sensor-data-live>
+</div>
+
+<div class="block pull-right" id="infoDiv" *ngIf="sensor">
+  <div class="blockTitle" id="infoTitle">
+    Sensor information
+  </div>
+  <div class="blockContent" id="infoContent">
+    <ul class="no-bullets">
+      <li><span class="glyphicon glyphicon-tag"></span>  <b>{{sensor.sid}}</b></li>
+      <li><span class="glyphicon glyphicon-home"></span>  <b>{{sensor.hid}}</b></li>
+      <li><span class="glyphicon glyphicon-map-marker"></span>  <b>{{sensor.location}}</b></li>
+    </ul>
+  </div>
 </div>

@@ -73,6 +73,11 @@ export class HttpService {
         return this._http.get(url, this.options).toPromise();
     }
 
+    getSensorById(sensorId:string){
+        var url = this.baseUrl + "sensor/id/" + sensorId + "/?token=" + this._tokenManager.retrieveToken();
+        return this._http.get(url, this.options).toPromise();
+    }
+
     getSensorsByHouseId(house:House){
         var url = this.baseUrl + "sensor/house/" + house.hid + "/?token=" + this._tokenManager.retrieveToken();
         return this._http.get(url, this.options).toPromise();
@@ -105,7 +110,7 @@ export class HttpService {
     }
 
     getSensorDataWithinTimeFrame(sensorId:string, fromTime:Number, toTime:Number){
-        var url = this.baseUrl + "sensor/data" + sensorId + "/" + fromTime + "/" + toTime + "/?token=" + this._tokenManager.retrieveToken();
+        var url = this.baseUrl + "sensor/data/" + sensorId + "/" + fromTime + "/" + toTime + "/?token=" + this._tokenManager.retrieveToken();
         return this._http.get(url, this.options).toPromise();
     }
 }

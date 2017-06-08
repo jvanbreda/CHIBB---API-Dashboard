@@ -6,6 +6,7 @@ import { Record } from "app/models/Record.model";
 import { GraphGeneratorService } from "app/services/graphgenerator.service";
 import { ScreenManagerService } from "app/services/screen-manager.service";
 import { ScreenStates } from "app/screenstates";
+import { Sensor } from 'app/models/sensor.model';
 
 declare var vis: any;
 
@@ -23,12 +24,24 @@ export class SensorDataComponent implements OnInit {
   private screenStates = ScreenStates;
 
   private start; 
+  private sensor: Sensor;
 
-  constructor(private _route: ActivatedRoute, private _http: HttpService, private graphGenerator: GraphGeneratorService, private screenManager: ScreenManagerService) { }
+  constructor(private _route: ActivatedRoute, private screenManager: ScreenManagerService, private _http: HttpService) { }
 
   ngOnInit() {
     this.subscription = this._route.params.subscribe(params => {
       this.sid = params['sid'] + "";
     })
+    this.getSensor();
   }
+
+  getSensor(){
+    this._http.getSensorById(this.sid)
+    .then(result => {
+      this.sensor = result.json().result[0];
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }  
 }

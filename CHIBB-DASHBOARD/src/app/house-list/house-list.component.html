@@ -1,6 +1,6 @@
 <h3> Houses </h3>
 <span> Here you can manage your houses. Click on a house to inspect the associated sensors </span>
-<span> <button class="btn btn-success pull-right" (click)="createModal.open()"> Add new house </button>
+<span> <button class="btn btn-success pull-right" (click)="createModal.open()"><span class="glyphicon glyphicon-plus"></span> Add new house </button>
 <hr>
 
  <modal #createModal>
@@ -32,10 +32,10 @@
         <td> {{house.address}} </td>
         <td> 
           <button type="button" class="btn btn-danger pull-right" (click)="deleteModal.open(); onSelectHouse(house)"> 
-            Delete house 
+            <span class="glyphicon glyphicon-trash"></span> Delete house 
           </button>
           <button type="button" class="btn btn-warning pull-right" (click)="updateModal.open(); onSelectHouse(house)"> 
-            Update address
+            <span class="glyphicon glyphicon-pencil"></span> Update address
           </button>
         </td>
       </tr>

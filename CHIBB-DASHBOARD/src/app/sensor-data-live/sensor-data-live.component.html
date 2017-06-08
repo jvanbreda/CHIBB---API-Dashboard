@@ -1,4 +1,26 @@
-<div class="chart pull-left" [ngClass]="(liveData.length > 0) ? 'visible' : 'hidden'">
+<div class="chart pull-left" [ngClass]="(liveValueDataSet.length > 0) ? 'visible' : 'hidden'">
     <h3>Live data from sensor {{sid}} <span *ngIf="unit != null"> in {{unit}}</span></h3>
     <div id="valueChartLive">Loading...</div>
   </div>
+
+<div class="block pull-right" *ngIf="sensorState">
+  <div class="blockTitle">
+    Sensor state
+  </div>
+  <div class="blockContent">
+    <ul class="no-bullets">
+      <li><span class="glyphicon glyphicon-heart"></span>  <b [ngClass]="{'bg-success': sensorState === 'Active', 'bg-warning': sensorState === 'Intermittent failures', 'bg-danger': sensorState === 'Inactive'}">   {{sensorState}}</b></li>
+    </ul>
+  </div>
+</div>
+
+<div class="block pull-right" *ngIf="sensorBatteryLevel">
+  <div class="blockTitle">
+    Sensor battery level
+  </div>
+  <div class="blockContent">
+    <ul class="no-bullets">
+      <li><span class="glyphicon glyphicon-flash"></span>   {{sensorBatteryLevel}}%</li>
+    </ul>
+  </div>
+</div>

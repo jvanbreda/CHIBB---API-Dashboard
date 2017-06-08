@@ -11,6 +11,6 @@ export class Sensor {
         this.type = type;
         this.location = location;
         this.attributes = attributes;
-        this.state = "Active";
+        this.state = "";
     }
 }

@@ -7,5 +7,28 @@
 }
 
 .chart {
-	width: 75%;
+	width: 60%;
+	height: 75%;
+}
+
+.no-bullets {
+	list-style-type: none;
+}
+
+.block {
+	font-size: 1.5em;
+	width: 30%;
+	border: 1px solid black;
+	border-radius: 2%;
+	margin-top: 5%;
+}
+
+.blockTitle {
+	color: white;
+	background-color: orangered;
+	border-bottom: 1px solid black;
+}
+
+#loader {
+	margin-bottom: 11%;
 }

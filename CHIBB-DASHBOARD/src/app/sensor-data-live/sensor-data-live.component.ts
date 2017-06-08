@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from "app/services/http.service";
 import { ActivatedRoute } from "@angular/router";
+import { Sensor } from 'app/models/sensor.model';
 
 declare var vis: any;
 
@@ -12,10 +13,13 @@ declare var vis: any;
 export class SensorDataLiveComponent implements OnInit {
   private subscription: any;
   private sid: string;
+  private sensor: Sensor;
+  private sensorState: string;
+  private sensorBatteryLevel: Number;
 
   private liveValueChart;
   private liveValueData = [];
-  private liveData;
+  private liveValueDataSet;
 
   private startDate = 0;
   private endDate = 0;
@@ -30,6 +34,7 @@ export class SensorDataLiveComponent implements OnInit {
     })
     setInterval(function(){
       scope.getNewestData();
+      scope.getSensorState();
     }, 1000);
   }
 
@@ -42,22 +47,36 @@ export class SensorDataLiveComponent implements OnInit {
     this.startDate = d1.getTime();
     this.endDate = d2.getTime();
 
-    this.liveData = new vis.DataSet();
+    this.liveValueDataSet = new vis.DataSet();
 
     var valueChartArea = document.getElementById('valueChartLive');
     var options = {
       start: this.startDate,
-      end: this.endDate
+      end: this.endDate,
+      height: 400
     }
     valueChartArea.innerHTML = "";
-    this.liveValueChart = new vis.Graph2d(valueChartArea, this.liveData, options);
+    this.liveValueChart = new vis.Graph2d(valueChartArea, this.liveValueDataSet, options);
   }
 
   getNewestData(){
     var scope = this;
     this._http.getLatestSensorData(this.sid)
     .then(result => {
+      scope.sensorBatteryLevel = result.json().result.sensorBatteryLevel;
       scope.addDataToGraph(result);
+      scope.addDataToBlocks(result);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+
+  getSensorState(){
+    var scope = this;
+    this._http.getSensorState(this.sid)
+    .then(result => {
+      scope.sensorState = result.json().result.status;
     })
     .catch(error => {
       console.log(error);
@@ -65,14 +84,26 @@ export class SensorDataLiveComponent implements OnInit {
   }
 
   addDataToGraph(result){
+    var d1 = new Date();
+    var d2 = new Date();
+    
+    d1.setSeconds(d1.getSeconds() - 30);
+    d2.setSeconds(d2.getSeconds() + 30);
+    this.startDate = d1.getTime();
+    this.endDate = d2.getTime();
+
     var record = result.json().result;
-    this.liveData.add({
-      x: record.timestamp,
-      y: record.value
-    })
-    this.startDate += 1000;
-    this.endDate += 1000
+    if(record.value){
+      this.liveValueDataSet.add({
+        x: record.timestamp,
+        y: record.value
+      })
+    }
     this.liveValueChart.setWindow(this.startDate, this.endDate, {animation: true});
+  }
+
+  addDataToBlocks(result){
+
   }
 
 }
