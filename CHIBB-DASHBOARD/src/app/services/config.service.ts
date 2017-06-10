@@ -8,7 +8,7 @@ export class ConfigurationService {
   }
 
   getKey(key: string): any {
-    return this.http.get('/app/config.json').toPromise()
+    return this.http.get('/assets/config.json').toPromise()
     .then(result => { return result.json()[key] })
     .catch(error => { return error })
   }

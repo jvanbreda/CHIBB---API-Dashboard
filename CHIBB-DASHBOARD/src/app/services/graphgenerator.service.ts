@@ -27,7 +27,7 @@ export class GraphGeneratorService {
 		return {valueData: valueData, unit: unit};
 	}
 
-	generateGraphDataWithGroup(records:Record[], group:string){
+	generateGraphDataWithGroup(records:Record[], group:number){
 		var hasValue = records[0].value ? true : false;
 
 		var valueData = [];

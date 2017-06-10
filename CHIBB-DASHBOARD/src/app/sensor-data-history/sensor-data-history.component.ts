@@ -98,7 +98,7 @@ export class SensorDataHistoryComponent implements OnInit, OnDestroy {
 
       var workersDone = 0;
       for(var i = 0; i < workers.length; i++){
-        workers[i] = new Worker("/app/workers/data_workers.js");
+        workers[i] = new Worker("/assets/workers/data_workers.js");
         workers[i].postMessage(result.json().result.slice(i * (length / workers.length), (i + 1) * (length / workers.length)));
         workers[i].onmessage = function(event){
           switch(event.data){
