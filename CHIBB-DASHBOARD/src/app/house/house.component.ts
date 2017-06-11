@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { TokenManager } from "app/services/token-manager.service";
-import { HttpService } from "app/services/http.service";
 
 @Component({
   selector: 'app-house',
@@ -9,7 +7,7 @@ import { HttpService } from "app/services/http.service";
 })
 export class HouseComponent {
 
-  constructor(private _tokenManager: TokenManager, private _http: HttpService) { }
+  constructor() { }
 
   
 

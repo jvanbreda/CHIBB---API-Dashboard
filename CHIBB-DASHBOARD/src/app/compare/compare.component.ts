@@ -6,6 +6,8 @@ import { Record } from 'app/models/record.model';
 import { GraphGeneratorService } from 'app/services/graphgenerator.service';
 import { PearsonCalculator } from '../pearsonCalculator';
 
+// Needed for vis.js to work. Vis.js is a javascript chart library used for drawing dynamic data.
+// To use vis.js, we need to declare it here, telling typescript it has been declared elsewhere (node modules)
 declare var vis: any;
 
 @Component({
@@ -38,6 +40,7 @@ export class CompareComponent implements OnInit {
     this.getHouses();
   }
 
+  // Function which gets the houses: needed for finding out which houses the user can choose from
    getHouses(){
     this.houses = [];
     this._http.getHouses()
@@ -58,6 +61,7 @@ export class CompareComponent implements OnInit {
       })
   }
 
+  // When the user has selected a house, the associated sensors will be gotten next
   getSensorsFromSelectedHouse(){
     this.sensors = [];
     this._http.getSensorsByHouseId(this.selectedHouse)
@@ -103,7 +107,7 @@ export class CompareComponent implements OnInit {
 
     })
     .catch(error => {
-
+      console.log(error);
     })
 
     this._http.getSensorDataWithinTimeFrame(this.selectedSensor2.sid, d1.getTime(), d2.getTime())
@@ -123,12 +127,14 @@ export class CompareComponent implements OnInit {
     })
   }
 
+  // Determine which house is selected
   onChangeHouse(house: string){
     var hid = house.substr(0, house.indexOf("--") - 1);
     this.selectedHouse = this.houses.find(x => x.hid === hid);
     this.getSensorsFromSelectedHouse();
   }
 
+  // Determine which sensors are selected
   setSelectedSensors(s1:string, s2:string){
     this.similarity = undefined;
     var sid1 = s1.substr(0, s1.indexOf("--") - 1);
@@ -139,8 +145,12 @@ export class CompareComponent implements OnInit {
   }
 
   initWorkers(result, workers, records){
+    // caching the length of the data set slightly increases performance
     var length = result.json().result.length;
+    // scope is a rather difficult subject in typescript. By making sure a reference to the global 'this', 
+    // every function and variable can be called from every nested function
     var scope = this;
+      // Custom event to track if every worker is done with his job before moving on
       var doneEvent = new CustomEvent('workerDone');
       document.addEventListener('workerDone', function(){
         workersDone++;
@@ -151,9 +161,12 @@ export class CompareComponent implements OnInit {
       }, false);
 
       var workersDone = 0;
+      // Creating new workers and devide the data set over them so they can each process a part seperately
       for(var i = 0; i < workers.length; i++){
         workers[i] = new Worker("/assets/workers/data_workers.js");
         workers[i].postMessage(result.json().result.slice(i * (length / workers.length), (i + 1) * (length / workers.length)));
+        // A worker can send two messages: "Done" when he has processed every data point from the set
+        // A processed record, which will then be inserted in an array for further usage
         workers[i].onmessage = function(event){
           switch(event.data){
             case "Done":
@@ -168,6 +181,7 @@ export class CompareComponent implements OnInit {
       }
   }
 
+  // the function which draws the graph using the given dataset and options
   makeGraph(){
     var d1 = new Date();
     var d2 = new Date();
@@ -202,6 +216,8 @@ export class CompareComponent implements OnInit {
     document.getElementById("loader").className = 'spinning hidden';    
   }
 
+  // Gets a human readable similarity description. This function basically translated the pearson
+  // coefficient to a human readable text
   getDescription(){
     if(this.similarity >= -1 && this.similarity < -0.5)
       return "The sensors have a negative correlation with one another. That is, if the first sensor value increases, the second decreased and vice versa.";

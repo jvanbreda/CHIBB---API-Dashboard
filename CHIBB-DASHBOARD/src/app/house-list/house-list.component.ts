@@ -82,6 +82,8 @@ export class HouseListComponent implements OnInit {
       })
   }
 
+  // Sets the house that is clicked to an object in typescript, so the selected house and its attributes
+  // can easily be retrieved
   onSelectHouse(house:House){
     this.selectedHouse = house;
   }

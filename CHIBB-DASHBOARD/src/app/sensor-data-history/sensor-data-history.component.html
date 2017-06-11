@@ -18,7 +18,7 @@
 
 <div class="block pull-right">
   <button (click)="getData()"> Refresh data </button> <br>
-  From: <input #fromTimestamp type="datetime-local" name="fromTimestamp"/>
+  From: <input #fromTimestamp type="datetime-local" name="fromTimestamp"/> <br>
   To: <input #toTimestamp type="datetime-local" name="toTimestamp"/> 
   <button (click)="setWindow(fromTimestamp.value, toTimestamp.value)">See specific data </button>
 </div>

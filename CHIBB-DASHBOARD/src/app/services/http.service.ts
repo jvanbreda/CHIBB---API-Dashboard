@@ -7,8 +7,16 @@ import { TokenManager } from "app/services/token-manager.service";
 import { House } from "app/models/house.model";
 import { Sensor } from "app/models/sensor.model";
 
+// The @injectable decorator makes sure that this class is injectable in every other class where the 
+// developer may need it. The class only needs to be defined in the constructor of the class where this
+// service is needed, so no reference has to be created
 @Injectable()
 export class HttpService {
+
+    // This service is responsable for the communication between the application and the API.
+    // This service created a url based on the parameters provided and returns a promise which can
+    // be used to asynchonously process the result of the request
+
     private headers = new Headers(
         {
             "Content-type": "application/json; charset=utf-8",

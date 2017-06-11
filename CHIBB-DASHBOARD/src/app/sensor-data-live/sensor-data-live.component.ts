@@ -32,6 +32,8 @@ export class SensorDataLiveComponent implements OnInit {
 
   constructor(private _http: HttpService, private _route: ActivatedRoute) { }
 
+  // The id of the wanted sensor is a parameter of the url. With this piece of code the parameter 
+  // can be retrieved
   ngOnInit() {
     var scope = this;
     this.initGraph();
@@ -118,6 +120,12 @@ export class SensorDataLiveComponent implements OnInit {
     this.liveValueChart.setWindow(this.startDate, this.endDate, {animation: true});
   }
 
+  // If a sensor is inactive for a number of seconds and then reboots, the following data will be 
+  // placed in another group to make sure that the last point from the previous session will not
+  // connect to the first point of the new session
+  // The skip variable is used to make sure that the first point from the new session will not be 
+  // placed in the old session. One point of data will be skipped to the old session will only
+  // contain old data and the new session will only contain new data
   determineGroup(){
     console.log(this.skip);
     if((this.previousState === "Inactive" || this.previousState === "Intermittent failures") && this.sensorState === "Active"){

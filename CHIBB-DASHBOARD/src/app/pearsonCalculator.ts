@@ -1,5 +1,8 @@
 export class PearsonCalculator {
 
+	// This static method calculates the pearson coefficient. Based on formulae provided during
+	// the course INFDTA01-1 (recommendation systems)
+
 	static calculateSimilarity(sensordata1, sensordata2){
 		var a: number = 0;
 		var b1: number = 0;

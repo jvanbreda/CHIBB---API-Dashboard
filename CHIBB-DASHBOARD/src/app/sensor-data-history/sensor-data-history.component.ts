@@ -36,6 +36,8 @@ export class SensorDataHistoryComponent implements OnInit, OnDestroy {
 
   constructor(private _route: ActivatedRoute, private _http: HttpService, private graphGenerator: GraphGeneratorService, private screenManager: ScreenManagerService) { }
 
+  // The id of the wanted sensor is a parameter of the url. With this piece of code the parameter 
+  // can be retrieved
   ngOnInit() {
     this.subscription = this._route.params.subscribe(params => {
       this.sid = params['sid'] + "";
@@ -72,15 +74,22 @@ export class SensorDataHistoryComponent implements OnInit, OnDestroy {
 
     var workers = [w1, w2, w3, w4, w5];
 
-    if(typeof(Worker) !== undefined){
-      this.initWorkers(result, workers);
+    if(length > 0){
+      // Not all browsers support Web workers. If Workers can be used, they will be used...
+      if(typeof(Worker) !== undefined){
+        this.initWorkers(result, workers);
+      }
+      // ...otherwise the 'old-fashioned' way should be used.
+      else {
+        alert("Your browser does not support workers. Therefore loading data will take longer...")
+        for(var i = 0; i < length; i++){
+          var record = result.json().result[i];
+          this.records.unshift(new Record(record.value, record.timestamp, record.sensorState, record.sensorBatteryLevel, record.unit));
+        }
+      }
     }
     else {
-      alert("Your browser does not support workers. Therefore loading data will take longer...")
-      for(var i = 0; i < length; i++){
-        var record = result.json().result[i];
-        this.records.unshift(new Record(record.value, record.timestamp, record.sensorState, record.sensorBatteryLevel, record.unit));
-      }
+      document.getElementById("loader").className = "spinning hidden";
     }
   }
 
