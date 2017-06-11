@@ -130,6 +130,7 @@ export class CompareComponent implements OnInit {
   }
 
   setSelectedSensors(s1:string, s2:string){
+    this.similarity = undefined;
     var sid1 = s1.substr(0, s1.indexOf("--") - 1);
     var sid2 = s2.substr(0, s2.indexOf("--") - 1);
     this.selectedSensor1 = this.sensors.find(x => x.sid === sid1);

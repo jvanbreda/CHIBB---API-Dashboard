@@ -15,6 +15,7 @@ export class SensorDataLiveComponent implements OnInit {
   private sid: string;
   private sensor: Sensor;
   private sensorState: string;
+  private previousState: string;
   private sensorBatteryLevel: Number;
 
   private liveValueChart;
@@ -23,6 +24,11 @@ export class SensorDataLiveComponent implements OnInit {
 
   private startDate = 0;
   private endDate = 0;
+
+  private counter = 0;
+
+  private groupCounter = 0;
+  private skip: boolean = false;
 
   constructor(private _http: HttpService, private _route: ActivatedRoute) { }
 
@@ -65,7 +71,6 @@ export class SensorDataLiveComponent implements OnInit {
     .then(result => {
       scope.sensorBatteryLevel = result.json().result.sensorBatteryLevel;
       scope.addDataToGraph(result);
-      scope.addDataToBlocks(result);
     })
     .catch(error => {
       console.log(error);
@@ -76,7 +81,17 @@ export class SensorDataLiveComponent implements OnInit {
     var scope = this;
     this._http.getSensorState(this.sid)
     .then(result => {
-      scope.sensorState = result.json().result.status;
+      if(scope.counter > 0){
+        scope.previousState = scope.sensorState;
+        scope.sensorState = result.json().result.status;
+        scope.determineGroup();
+      }
+      else{
+        scope.previousState = "";
+        scope.sensorState = result.json().result.status;
+      }
+      scope.counter++;
+    
     })
     .catch(error => {
       console.log(error);
@@ -93,17 +108,26 @@ export class SensorDataLiveComponent implements OnInit {
     this.endDate = d2.getTime();
 
     var record = result.json().result;
-    if(record.value){
+    if(record.value && !this.skip){
       this.liveValueDataSet.add({
         x: record.timestamp,
-        y: record.value
+        y: record.value,
+        group: this.groupCounter
       })
     }
     this.liveValueChart.setWindow(this.startDate, this.endDate, {animation: true});
   }
 
-  addDataToBlocks(result){
+  determineGroup(){
+    console.log(this.skip);
+    if((this.previousState === "Inactive" || this.previousState === "Intermittent failures") && this.sensorState === "Active"){
+      this.skip = false;
+      this.groupCounter++;
+    }
 
+    else if((this.previousState === "Inactive" || this.previousState === "Intermittent failures")){
+      this.skip = true;
+    }
   }
 
 }

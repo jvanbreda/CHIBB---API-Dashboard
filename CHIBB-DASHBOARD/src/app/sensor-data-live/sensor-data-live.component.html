@@ -1,3 +1,9 @@
+<div>
+  Here you can see the live data of the sensor from the moment you selected the sensor to now. Lines
+  in the graph can have different colors. A different color means a different session, that is if a 
+  sensor disconnects, and after a while reconnects again, a new session will be started. 
+</div>
+
 <div class="chart pull-left" [ngClass]="(liveValueDataSet.length > 0) ? 'visible' : 'hidden'">
     <h3>Live data from sensor {{sid}} <span *ngIf="unit != null"> in {{unit}}</span></h3>
     <div id="valueChartLive">Loading...</div>
